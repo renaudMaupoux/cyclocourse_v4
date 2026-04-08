@@ -1,0 +1,20 @@
+{
+  "name": "cyclocourse-v4",
+  "version": "1.0.0",
+  "description": "Application de reconnaissance vocale pour détecter et éditer des chiffres de 1 à 1000",
+  "private": true,
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && npm start",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": ["voice-recognition", "vue", "express", "google-cloud", "speech-to-text"],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,46 @@
+# Clés et secrets
+client_secret_*.json
+*.pem
+*.key
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Dépendances
+node_modules/
+package-lock.json
+yarn.lock
+
+# Base de données
+*.sqlite
+*.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Tests
+coverage/
+.nyc_output/
+
+# Système
+Thumbs.db
+desktop.ini
