@@ -2,12 +2,16 @@ import express, { type Application } from 'express';
 import http from 'http';
 import { Server as SocketIoServer } from 'socket.io';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import sequelize from './config/database';
 import { resolveCorsOrigin } from './config/corsOrigin';
 import './models/Number';
+import './models/Rider';
 import errorHandler from './middleware/errorHandler';
 import numbersRoutes from './routes/numbers';
+import ridersRoutes from './routes/riders';
 import voiceRoutes from './routes/voice';
+import { openApiDocument } from './swagger/openapi';
 
 const corsOrigin = resolveCorsOrigin();
 
@@ -39,13 +43,24 @@ app.use((req, _res, next) => {
   next();
 });
 
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(openApiDocument, {
+    customSiteTitle: 'CycloCourse API — Swagger',
+    customCss: '.swagger-ui .topbar { display: none }'
+  })
+);
+
 app.get('/', (_req, res) => {
   res.json({
     success: true,
     message: 'API CycloCourse - Reconnaissance Vocale',
     version: '1.0.0',
+    swagger: '/api-docs',
     endpoints: {
       numbers: '/api/numbers',
+      riders: '/api/riders',
       voice: {
         recognizeText: 'POST /api/voice/recognize-text'
       }
@@ -54,6 +69,7 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api/numbers', numbersRoutes);
+app.use('/api/riders', ridersRoutes);
 app.use('/api/voice', voiceRoutes);
 
 app.use(errorHandler);
@@ -94,6 +110,7 @@ const startServer = async (): Promise<void> => {
       console.log('\n🚀 ════════════════════════════════════════════════');
       console.log(`   Serveur démarré sur le port ${PORT}`);
       console.log(`   API: http://localhost:${PORT}`);
+      console.log(`   Swagger UI: http://localhost:${PORT}/api-docs`);
       console.log(`   WebSocket: ws://localhost:${PORT}`);
       console.log(
         `   CORS: ${process.env.FRONTEND_URLS || process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'http://localhost:5173' : 'dev → localhost / 127.0.0.1 (tout port)')}`

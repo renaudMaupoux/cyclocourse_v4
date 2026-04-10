@@ -55,3 +55,40 @@ export const validateNumber = (req: Request, res: Response, next: NextFunction):
 
   next();
 };
+
+const riderSchema = Joi.object({
+  numero: Joi.number().integer().min(1).max(1000).required(),
+  nom: Joi.string().min(1).max(200).required(),
+  club: Joi.string().max(300).allow('').optional(),
+  category: Joi.number().integer().min(1).max(6).required()
+});
+
+export const validateRider = (req: Request, res: Response, next: NextFunction): void => {
+  const { error } = riderSchema.validate(req.body);
+  if (error) {
+    res.status(400).json({
+      success: false,
+      error: 'Erreur de validation',
+      details: error.details[0]?.message
+    });
+    return;
+  }
+  next();
+};
+
+const importCsvSchema = Joi.object({
+  csvText: Joi.string().min(1).max(2_000_000).required()
+});
+
+export const validateImportCsv = (req: Request, res: Response, next: NextFunction): void => {
+  const { error } = importCsvSchema.validate(req.body);
+  if (error) {
+    res.status(400).json({
+      success: false,
+      error: 'Erreur de validation',
+      details: error.details[0]?.message
+    });
+    return;
+  }
+  next();
+};
