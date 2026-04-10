@@ -69,8 +69,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  update: [id: number, value: number];
-  delete: [id: number];
+  update: [id: string, value: number];
+  delete: [id: string];
 }>();
 
 const isEditing = ref(false);

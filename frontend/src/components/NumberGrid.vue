@@ -69,8 +69,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  update: [id: number, value: number];
-  delete: [id: number];
+  update: [id: string, value: number];
+  delete: [id: string];
   reset: [];
 }>();
 
@@ -81,6 +81,6 @@ const stats = computed(() => ({
   edited: props.numbers.filter((n) => n.isEdited).length
 }));
 
-const handleUpdate = (id: number, value: number) => emit('update', id, value);
-const handleDelete = (id: number) => emit('delete', id);
+const handleUpdate = (id: string, value: number) => emit('update', id, value);
+const handleDelete = (id: string) => emit('delete', id);
 </script>

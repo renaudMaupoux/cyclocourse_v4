@@ -49,7 +49,7 @@ export const useNumbersStore = defineStore('numbers', {
       }
     },
 
-    async updateNumber(id: number, value: number) {
+    async updateNumber(id: string, value: number) {
       try {
         const response = await numbersApi.update(id, value);
 
@@ -66,7 +66,7 @@ export const useNumbersStore = defineStore('numbers', {
       }
     },
 
-    async deleteNumber(id: number) {
+    async deleteNumber(id: string) {
       try {
         await numbersApi.delete(id);
 
@@ -115,7 +115,7 @@ export const useNumbersStore = defineStore('numbers', {
       });
 
       websocketService.on('number-deleted', (data) => {
-        const payload = data as { id: number };
+        const payload = data as { id: string };
         const index = this.numbers.findIndex((n) => n.id === payload.id);
         if (index !== -1) {
           this.numbers.splice(index, 1);

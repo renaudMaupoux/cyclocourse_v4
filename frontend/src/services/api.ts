@@ -5,6 +5,7 @@ import type {
   NumbersListResponse,
   VoiceRecognizeResponse
 } from '@/types/number';
+import type { Rider, RiderRankingResponse, RidersListResponse } from '@/types/rider';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -34,17 +35,17 @@ export const numbersApi = {
     return response.data;
   },
 
-  getById: async (id: number): Promise<NumberSingleResponse> => {
+  getById: async (id: string): Promise<NumberSingleResponse> => {
     const response = await apiClient.get<NumberSingleResponse>(`/numbers/${id}`);
     return response.data;
   },
 
-  update: async (id: number, value: number): Promise<NumberSingleResponse> => {
+  update: async (id: string, value: number): Promise<NumberSingleResponse> => {
     const response = await apiClient.put<NumberSingleResponse>(`/numbers/${id}`, { value });
     return response.data;
   },
 
-  delete: async (id: number): Promise<{ success: boolean }> => {
+  delete: async (id: string): Promise<{ success: boolean }> => {
     const response = await apiClient.delete<{ success: boolean }>(`/numbers/${id}`);
     return response.data;
   },
@@ -56,6 +57,42 @@ export const numbersApi = {
 };
 
 /** Phase 1 : texte issu du Web Speech API → extraction des chiffres côté serveur */
+export const ridersApi = {
+  list: async (search?: string): Promise<RidersListResponse> => {
+    const response = await apiClient.get<RidersListResponse>('/riders', {
+      params: search ? { search } : undefined
+    });
+    return response.data;
+  },
+
+  create: async (
+    payload: Pick<Rider, 'numero' | 'nom' | 'category'> & { club?: string }
+  ): Promise<{ success: boolean; data: Rider }> => {
+    const response = await apiClient.post<{ success: boolean; data: Rider }>('/riders', payload);
+    return response.data;
+  },
+
+  importCsv: async (
+    csvText: string
+  ): Promise<{ success: boolean; imported: number; message: string }> => {
+    const response = await apiClient.post<{ success: boolean; imported: number; message: string }>(
+      '/riders/import-csv',
+      { csvText }
+    );
+    return response.data;
+  },
+
+  remove: async (id: string): Promise<{ success: boolean }> => {
+    const response = await apiClient.delete<{ success: boolean }>(`/riders/${id}`);
+    return response.data;
+  },
+
+  ranking: async (): Promise<RiderRankingResponse> => {
+    const response = await apiClient.get<RiderRankingResponse>('/riders/ranking');
+    return response.data;
+  }
+};
+
 export const voiceApi = {
   recognizeText: async (text: string, confidence?: number): Promise<VoiceRecognizeResponse> => {
     const payload: { text: string; confidence?: number } = { text };

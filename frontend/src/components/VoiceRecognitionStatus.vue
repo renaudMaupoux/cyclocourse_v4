@@ -1,8 +1,9 @@
 <template>
-  <div class="mx-auto mb-8 max-w-3xl px-1">
+  <div :class="embedded ? 'flex h-full w-full flex-col px-1' : 'mx-auto mb-8 max-w-3xl px-1'">
     <Card
       :class="
         cn(
+          embedded && 'flex h-full min-h-0 flex-col',
           'border-white/20 bg-card/95 shadow-xl backdrop-blur transition-shadow',
           wsConnected && 'ring-1 ring-emerald-500/40',
           isBusy && 'ring-2 ring-primary/50'
@@ -94,10 +95,13 @@ const props = withDefaults(
   defineProps<{
     wsConnected?: boolean;
     isRecording?: boolean;
+    /** Intégré dans une grille (sans marge/max-width globale) */
+    embedded?: boolean;
   }>(),
   {
     wsConnected: false,
-    isRecording: false
+    isRecording: false,
+    embedded: false
   }
 );
 

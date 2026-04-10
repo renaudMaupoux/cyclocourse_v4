@@ -1,6 +1,6 @@
 /** Chiffre persisté (API + WebSocket) */
 export interface NumberEntry {
-  id: number;
+  id: string;
   value: number;
   confidence: number;
   isEdited?: boolean;
